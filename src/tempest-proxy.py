@@ -91,7 +91,7 @@ def transform_data(data: dict) -> dict:
     return filtered_data
 
 
-@app.post("/")
+@app.post("")
 @app.get("")
 @limiter.limit("5/minute")  # ⏳ Apply rate limit (5 requests per minute per IP)
 async def proxy_request(request: Request):
