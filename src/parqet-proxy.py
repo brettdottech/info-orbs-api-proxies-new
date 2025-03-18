@@ -98,8 +98,8 @@ def get_perf_chart(data, perf_chart):
     return values.get(perf_chart, 0)
 
 
-@app.post("")
-@app.get("")
+@app.post("/")
+@app.get("/")
 @limiter.limit("5/minute")  # ⏳ Apply rate limit (5 requests per minute per IP)
 async def proxy_request(request: Request):
     """Secure JSON proxy with rate limiting."""
