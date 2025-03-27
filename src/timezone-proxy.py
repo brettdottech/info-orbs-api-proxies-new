@@ -6,18 +6,20 @@ import time
 
 app = FastAPI()
 
-@app.api_route("/timezone", methods=["GET", "POST"])
-async def timezone_info(request: Request):
-    # Support both query param (GET) and JSON body (POST)
-    if request.method == "GET":
-        tz_name = request.query_params.get("timezone")
-    else:
-        try:
-            body = await request.json()
-            tz_name = body.get("timezone")
-        except Exception:
-            tz_name = None
+@app.get("/timezone")
+async def timezone_get(timezone: str = None):
+    return handle_timezone_request(timezone)
 
+@app.post("/timezone")
+async def timezone_post(request: Request):
+    try:
+        body = await request.json()
+        timezone = body.get("timezone")
+    except Exception:
+        timezone = None
+    return handle_timezone_request(timezone)
+
+def handle_timezone_request(tz_name):
     if not tz_name:
         return JSONResponse(status_code=400, content={
             "status": "ERROR",
