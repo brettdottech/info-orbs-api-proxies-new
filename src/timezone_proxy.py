@@ -4,7 +4,14 @@ import pytz
 from datetime import datetime
 import time
 
+print("🚀 timezone_proxy.py loaded!")  # Debug line to confirm file is running
+
 app = FastAPI()
+
+# Root route to confirm the app is loading
+@app.get("/")
+def root():
+    return {"status": "timezone proxy running"}
 
 @app.get("/timezone")
 async def get_timezone(timezone: str = None):
