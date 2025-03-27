@@ -11,33 +11,32 @@ async def get_timezone(timezone: str = None):
     return handle_timezone_request(timezone)
 
 @app.post("/timezone")
-async def timezone_post(request: Request):
+async def post_timezone(request: Request):
     try:
         body = await request.json()
         timezone = body.get("timezone")
     except Exception:
         timezone = None
-
     return handle_timezone_request(timezone)
 
 def handle_timezone_request(tz_name):
     if not tz_name:
-        return JSONResponse(status_code=400, content={
+        return {
             "status": "ERROR",
             "message": "Missing 'timezone' parameter.",
             "gmtOffset": None,
             "zoneEnd": None
-        })
+        }
 
     try:
         tz = pytz.timezone(tz_name)
     except pytz.UnknownTimeZoneError:
-        return JSONResponse(status_code=400, content={
+        return {
             "status": "ERROR",
             "message": f"Unknown timezone '{tz_name}'.",
             "gmtOffset": None,
             "zoneEnd": None
-        })
+        }
 
     now = datetime.utcnow()
     now_with_tz = tz.localize(now, is_dst=None)
