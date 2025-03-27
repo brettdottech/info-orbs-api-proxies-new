@@ -11,12 +11,13 @@ async def get_timezone(timezone: str = None):
     return handle_timezone_request(timezone)
 
 @app.post("/timezone")
-async def post_timezone(request: Request):
+async def timezone_post(request: Request):
     try:
-        data = await request.json()
-        timezone = data.get("timezone")
+        body = await request.json()
+        timezone = body.get("timezone")
     except Exception:
         timezone = None
+
     return handle_timezone_request(timezone)
 
 def handle_timezone_request(tz_name):
